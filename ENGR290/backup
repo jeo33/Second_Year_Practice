@@ -1,0 +1,135 @@
+#include <avr/io.h>
+
+unsigned int duty;
+unsigned int pulse;
+ double distance;
+ int j;//save uss
+unsigned int ADC_read()
+
+{
+
+ADMUX = 0x40;        //channel A0 selected
+ADCSRA|=(1<<ADSC);   // start conversion
+while(!(ADCSRA & (1<<ADIF)));   
+ADCSRA|=(1<<ADIF);  
+return (ADC); //return calculated ADC value
+
+} 
+
+
+
+ void Uss()
+{
+  if (j==1)
+
+    {
+
+        TCCR1B=0;
+
+        pulse=TCNT1;
+
+        TCNT1=0;
+
+        j=0;
+
+    }
+
+    if (j==0)
+
+    {
+
+        TCCR1B|=(1<<CS10);
+
+        j=1;
+
+    }
+
+}
+
+
+
+int main(void)
+
+{
+Serial.begin(9600);
+
+ADMUX=(1<<REFS0);      // Selecting internal reference voltage
+
+ADCSRA=(1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);     // Enable ADC also set Prescaler as 128
+
+int i = 0; // define an integer to save adc read value
+
+DDRD |= (1 << DDD3)|(1 << DDD5)|(1 << DDD6)|(1 << DDD7);
+//trigger 6 echo 7 5 pwm out
+TCCR1A=0;
+TCCR1B=0;
+ TCCR2A |= (1<<WGM20)|(1<<WGM21)|(0<<COM2B0)|(1<<COM2B1);              
+
+
+ TCCR2B |=(1<<CS20)|(0<<CS21)|(0<<CS22);  
+
+
+    while (1) 
+    {
+      i = ADC_read();  //save adc read value in integer
+      
+      /*
+      DDRD |= (1 << DDD6);
+      Uss();
+      _delay_us(15);
+      DDRD &=~ (1 << DDD6);
+      distance=pulse/58;
+      */
+      
+      distance=1/(((i*5.0)/1024-0.24)/(20.4));
+           if(distance<15)
+      {
+        duty=0;
+      }
+      else if(distance>40)
+      {
+        duty=255;
+      }
+      else duty=distance*10.2-153;
+
+      
+      
+
+      
+ 
+
+      {
+
+         /*
+         Serial.print(j);
+      Serial.print("     distance (cm):");
+      Serial.println(distance);
+
+       Serial.print(" duty");
+      Serial.println(pulse);
+         */
+       
+        Serial.print(i);
+      Serial.print("     distance (cm):");
+      Serial.println(distance);
+
+       Serial.print(" duty");
+      Serial.println(duty);
+      
+      
+      }
+OCR2B=duty;
+_delay_ms(200);
+     
+    
+    }      
+      
+    
+      
+     
+  
+  
+  
+        
+
+}
