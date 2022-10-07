@@ -1,0 +1,45 @@
+package coen352;
+
+public class WarehouseInventory {
+	// Data members
+	private SinglyListDictionary<String,InventoryRecord> records;
+	private int numOfRecords;
+	private int maxNumOfRecords;
+	
+	// Constructor
+	WarehouseInventory(int nr){
+		records = new SinglyListDictionary<String,InventoryRecord>(nr);
+		numOfRecords = 0;
+		maxNumOfRecords = nr;
+	}
+	
+	// Getter and setter functions
+	public int getNumOfRecords() {return numOfRecords;}
+	public void setNumOfRecords(int nr) {numOfRecords = nr;}
+	
+	// Functions
+	public void insert(InventoryRecord ir) {
+		records.insert(ir.getID(), ir);
+		numOfRecords++;
+	}
+	public void remove(String key) {
+		records.remove(key);
+		numOfRecords--;
+	}
+	public void removeAll() {
+		for(int i = 0; i < numOfRecords; i++) {
+			records.removeAny();
+		}
+		numOfRecords = 0;
+	}
+	public InventoryRecord find(String key) {
+		return records.find(key);
+	}
+	public int numberOfRecords() {
+		return numOfRecords;
+	}
+	
+	public double totalValue() {
+	}
+	
+}
