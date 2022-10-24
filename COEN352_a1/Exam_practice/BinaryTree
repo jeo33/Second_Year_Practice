@@ -1,0 +1,91 @@
+
+public class Node {
+	private int Data;
+	private Node Left;
+	private Node Right;
+	public Node getRight() {
+		return Right;
+	}
+	public void setRight(Node child) {
+		Right = child;
+	}
+	public Node getLeft() {
+		return Left;
+	}
+	public void setLeft(Node parent) {
+		Left = parent;
+	}
+	public int getData() {
+		return Data;
+	}
+	public void setData(int data) {
+		Data = data;
+	}
+	public Node search(int target)
+	{
+		Node result = null;
+		if(this.getData()==target)
+			return this;
+		if(this.getLeft()!=null)
+		{
+			result=this.getLeft().search(target);
+			
+		}
+		
+			if(this.getRight()!=null)
+			{
+				result=this.getRight().search(target);
+				
+			}
+		
+		return result;
+	}
+	
+	
+	
+	
+	public Node Bsearch(int target)
+	{
+		Node result = null;
+		if(this.getData()==target)
+			return this;
+		if(this.getData()>target)
+		{
+			result=this.getLeft().search(target);
+			
+		}
+		
+		else
+			{
+				result=this.getRight().search(target);
+				
+			}
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	public boolean isLeaf()
+	{
+		if(this.getLeft()==null&&this.getRight()==null)
+		{
+			return true;
+		}
+		
+		else return false;
+		
+		
+	}
+	
+	public int depth(Node x)
+	{
+		if(x.isLeaf())
+		{
+			return 0;
+		}
+		else return 1+Math.max(x.getLeft().getData(),x.getLeft().getData());		
+	}
+}
