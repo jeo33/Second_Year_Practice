@@ -1,0 +1,69 @@
+package test;
+
+public class insert implements SortInterface{
+
+	@Override
+	public void sort(int[] arr) {
+		// TODO Auto-generated method stub
+		this.ss(arr,0,arr.length-1);
+	}
+	
+	private void ss(int[] arr,int x,int y)
+	{
+		if(x<y)
+		{
+			int middle=(x+y)/2;
+			ss(arr,x,middle);
+
+			ss(arr,middle,y);
+			merge(arr,x,middle,y);
+		}
+	}
+	
+	
+	static void print(int []a)
+	{
+		for(int i=0;i<a.length;i++)
+		{
+			System.out.print(a[i]);
+			String s=(i==a.length-1)?" \n":"<";
+			System.out.print(s);
+			
+		}
+	}
+	
+	
+	
+	void merge(int[] arr,int x,int middle,int y)
+	{
+		int left=x;
+		int right=middle+1;
+		if(arr[middle]<=arr[middle+1])
+		{
+			return;
+		}
+		else
+		{
+			while(left<=middle &&right>arr.length-1)
+			{
+				if(arr[left]<=arr[right])
+				{
+					left++;
+				}
+				else
+				{
+					int value=arr[right];
+					int index=right;
+					while(index!=left)
+					{
+						arr[index]=arr[index-1];
+						index--;
+					}
+					arr[left]=value;
+					left++;
+					right++;
+				}
+			}
+		}
+	}
+}
