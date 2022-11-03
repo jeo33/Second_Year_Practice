@@ -4,16 +4,130 @@ import java.util.Scanner;
 
 import Mylist.WarehouseInventory;
 
-public class WarehouseInventory extends SinglyListDictionary<String,InventoryRecord>{
+public class WarehouseInventory extends SinglyListDictionary<String,InventoryRecord> {
 		static // Data members
 		public int cmd=0;
 		InventoryRecord temp;
 		public String temp_key;
 		Scanner scanner_in= new Scanner(System.in);
+		tool util=new tool();
+		
 	WarehouseInventory()//Constructor
 	{
 		this.clear();
 	}
+	
+	
+	
+	
+	
+	
+	
+	public BinarySearchTreeNode createTreeIndex(String attribute)
+	{
+		BinarySearchTree BST=new BinarySearchTree();
+		switch(attribute)
+		{
+		case "unitprice":
+			for(int i=0;i<this.getSize();i++)
+			{
+				BST.insert(vList.getValue().getUnitPrice());
+			}
+			break;
+		case "quantityinstock":
+			for(int i=0;i<this.getSize();i++)
+			{
+				BST.insert(vList.getValue().getQtyInStock());
+			}
+			break;
+		case "inventroyvalue":
+			for(int i=0;i<this.getSize();i++)
+			{
+				BST.insert(vList.getValue().getInventoryValue());
+			}
+			break;
+		case "recorderlevel":
+			for(int i=0;i<this.getSize();i++)
+			{
+				BST.insert(vList.getValue().getReorderLevel());
+			}
+			break;
+		case "reordertime":
+			for(int i=0;i<this.getSize();i++)
+			{
+				BST.insert(vList.getValue().getReorderTime());
+			}
+			break;
+		case "reorderqty":
+			for(int i=0;i<this.getSize();i++)
+			{
+				BST.insert(vList.getValue().getReorderQty());
+			}
+			break;
+		}
+		
+		return  BST.rootNode();
+	}
+	
+	
+	
+	public double[] createIndex(String attribute)
+	{	
+		double[] temp=new double[this.size()];
+		switch(attribute)
+		{
+		case "unitprice":
+			for(int i=0;i<this.getSize();i++)
+			{
+				temp[i]=vList.getValue().getUnitPrice();
+				vList.next();
+			}
+			break;
+		case "quantityinstock":
+			for(int i=0;i<this.getSize();i++)
+			{
+				temp[i]=vList.getValue().getQtyInStock();
+				vList.next();
+			}
+			break;
+		case "inventroyvalue":
+			for(int i=0;i<this.getSize();i++)
+			{
+				temp[i]=vList.getValue().getInventoryValue();
+				vList.next();
+			}
+			break;
+		case "recorderlevel":
+			for(int i=0;i<this.getSize();i++)
+			{
+				temp[i]=vList.getValue().getReorderLevel();
+				vList.next();
+			}
+			break;
+		case "reordertime":
+			for(int i=0;i<this.getSize();i++)
+			{
+				temp[i]=vList.getValue().getReorderTime();
+				vList.next();
+			}
+			break;
+		case "reorderqty":
+			for(int i=0;i<this.getSize();i++)
+			{
+				temp[i]=vList.getValue().getReorderQty();
+				vList.next();
+			}
+			break;
+		}
+		
+		util.QS(temp,0,vList.size()-1);
+		util.print(temp);
+		return temp;
+		
+	}
+	
+	
+	
 	
 	//return sum of all values
 	double TotalIventoryValue(WarehouseInventory a)
@@ -40,14 +154,7 @@ public class WarehouseInventory extends SinglyListDictionary<String,InventoryRec
 		}
 	}
 	//main function 
-	public static void main(String args[])
-	{
-		WarehouseInventory a=new WarehouseInventory();
-		a.init();
-		menuDidsplay();
-		a.command(a);
-		System.out.println("Exit!!!!!!!!!!!");
-	}
+	
 	
 	
 	
@@ -144,7 +251,18 @@ public class WarehouseInventory extends SinglyListDictionary<String,InventoryRec
 				System.out.println("total value: "+TotalIventoryValue(a));
 				break;
 			case 7:
+				System.out.println("Please type the attributes for the item ");
+				String ID1 = scanner_in.next();
+				createIndex(ID1);
+				break;
+			case 8:
+				System.out.println("Please type the attributes for the item ");
+				ID1 = scanner_in.next();
+				createTreeIndex(ID1);
+				break;
+			case 9:
 				a.printAllData(a);
+				
 				break;
 			}
 		}while(cmd!=0);
@@ -156,6 +274,11 @@ public class WarehouseInventory extends SinglyListDictionary<String,InventoryRec
 		
 			System.out.println("Please type the ID for the item ");
 			String ID1 = scanner_in.next();
+			while(kList.checkIn(ID1))
+			{
+				System.out.println("ID duplicated,Please type the ID for the item ");
+				 ID1 = scanner_in.next();
+			}
 			System.out.println("Please type the name  for the item ");
 			String name = scanner_in.next();
 			System.out.println("Please type the description for the item");
@@ -178,13 +301,14 @@ public class WarehouseInventory extends SinglyListDictionary<String,InventoryRec
 			InventoryRecord s = new InventoryRecord( ID1,  name,  description, 
 					unitprice,  quantityinstock,  inventroyvalue,  recorderlevel,
 					RecorderTimeinDay,  quantityinorder,  Dsiscontinued);
+			
 			System.out.println("Success！");
 			return s;
 		
 	}
 	
 	//show menu
-	private static void menuDidsplay() 
+	static void menuDidsplay() 
 	{
 		System.out.println("************** WarehouseInventory ******" );
 		System.out.println("1. Insert a record");
