@@ -1,9 +1,3 @@
-/*
- * ATmega16 Interface with MPU-6050
- * http://www.electronicwings.com
- *
- */ 
-
 
 #define F_CPU 8000000UL									/* Define CPU clock Frequency e.g. here its 8MHz */
 #include <avr/io.h>										/* Include AVR std. library file */
